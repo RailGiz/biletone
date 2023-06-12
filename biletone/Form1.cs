@@ -34,7 +34,7 @@ namespace biletone
             }
         }
 
-         public class LeftRectangleIntegration
+        public class LeftRectangleIntegration
         {
             public Function Function { get; set; }
             public double LowerBound { get; set; }
@@ -70,7 +70,7 @@ namespace biletone
         {
             string input = textBox1.Text;
             // Разбор входного текста и создание экземпляра Function, например:
-            function = new Function(x => Math.Sqrt(4*(1-(x*x)/25)));
+            function = new Function(x => Math.Sqrt(4 * (1 - (x * x) / 25)));
 
             // Получение границ и количества шагов
             double lowerBound = Convert.ToDouble(textBox2.Text);
@@ -83,11 +83,19 @@ namespace biletone
 
             graphPlotter.PlotFunction(function, lowerBound, upperBound);
             graphPlotter.PlotRectangles(integration, lowerBound, upperBound);
+            
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             CalculateIntegral();
+            
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            graphPlotter.SaveGraphToFile("graph.jpg");
         }
     }
 
@@ -187,6 +195,20 @@ namespace biletone
 
             g.DrawLine(pen, 0, height / 2, width, height / 2);
             g.DrawLine(pen, width / 2, 0, width / 2, height);
+        }
+
+        public void SaveGraphToFile(string filename)
+        {
+            if (graphPanel == null) return;
+
+            using (Bitmap bitmap = new Bitmap(graphPanel.Width, graphPanel.Height))
+            {
+                using (Graphics bitmapGraphics = Graphics.FromImage(bitmap))
+                {
+                    bitmapGraphics.CopyFromScreen(graphPanel.PointToScreen(Point.Empty), Point.Empty, graphPanel.Size);
+                }
+                bitmap.Save(filename);
+            }
         }
     }
 }
